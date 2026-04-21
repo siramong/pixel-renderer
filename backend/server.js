@@ -501,6 +501,8 @@ if (typeof pollTimer.unref === "function") {
   pollTimer.unref();
 }
 
+// ── API routes ────────────────────────────────────────────────────────────────
+
 app.get("/api/status", (req, res) => {
   res.json({
     ok: true,
@@ -553,41 +555,42 @@ app.get("/health", (req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
 
+// ── Frontend serving ──────────────────────────────────────────────────────────
+// IMPORTANT: custom page routes MUST be registered BEFORE express.static,
+// otherwise the static middleware would try (and fail) to find a file named
+// "fullscreen" with no extension, then fall through to the SPA catch-all which
+// would serve index.html instead of the correct entry point.
+
 if (fs.existsSync(FRONTEND_INDEX_PATH)) {
+  // 1️⃣  Named entry points — registered first so static never shadows them
+  app.get("/fullscreen", (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST_PATH, "fullscreen.html"));
+  });
+
+  app.get("/mobile", (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST_PATH, "mobile.html"));
+  });
+
+  // 2️⃣  Static assets (JS, CSS, images, *.html with extension, etc.)
   app.use(express.static(FRONTEND_DIST_PATH));
 
-  // 👇 PRIMERO rutas custom
-  app.get('/fullscreen', (req, res) => {
-    res.sendFile(path.join(FRONTEND_DIST_PATH, 'fullscreen.html'));
-  });
-
-  app.get('/mobile', (req, res) => {
-    res.sendFile(path.join(FRONTEND_DIST_PATH, 'mobile.html'));
-  });
-
-  // 👇 DESPUÉS el fallback SPA
+  // 3️⃣  SPA catch-all — serves index.html for any remaining GET that isn't
+  //     an API or health route
   app.get(/^\/(?!api(?:\/|$)|health(?:\/|$)).*/, (req, res, next) => {
     if (req.method !== "GET") {
       next();
       return;
     }
-
     res.sendFile(FRONTEND_INDEX_PATH);
   });
 }
 
+// ── 404 ───────────────────────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ ok: false, error: "Not found" });
 });
 
-app.get("/fullscreen", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/fullscreen.html"));
-});
-
-app.get("/mobile", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/mobile.html"));
-});
-
+// ── Server startup ────────────────────────────────────────────────────────────
 const server = app.listen(PORT, () => {
   console.log(`\n  Pixel Renderer API`);
   console.log(`  → http://localhost:${PORT}`);

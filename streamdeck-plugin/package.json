@@ -1,0 +1,17 @@
+{
+  "name": "pixel-renderer-streamdeck-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stream Deck plugin (local) for Pixel Renderer status icon",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "node src/main.js",
+    "build:win": "pkg src/main.js --targets node18-win-x64 --output com.pixelrenderer.localstatus.sdPlugin/dist/plugin.exe"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}

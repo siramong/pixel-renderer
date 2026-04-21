@@ -1,0 +1,166 @@
+{
+  "defaultState": {
+    "id": "idle",
+    "label": "EN ESPERA",
+    "color": "#6a7280",
+    "icon": "idle"
+  },
+  "rules": [
+    {
+      "name": "Programando",
+      "match": {
+        "titleIncludes": ["Visual Studio Code", "Code -", "VS Code", "Claude", "GitHub"]
+      },
+      "state": {
+        "id": "coding",
+        "label": "PROGRAMANDO",
+        "color": "#ed5e5e",
+        "icon": "coding"
+      }
+    },
+    {
+      "name": "Edicion de video",
+      "match": {
+        "titleIncludes": ["CapCut", "Premiere Pro", "DaVinci Resolve", "After Effects"]
+      },
+      "state": {
+        "id": "editing",
+        "label": "EDITANDO",
+        "color": "#38c8ff",
+        "icon": "editing"
+      }
+    },
+    {
+      "name": "Tesis",
+      "match": {
+        "titleIncludes": ["Roblox Studio", "RobloxStudio"]
+      },
+      "state": {
+        "id": "tesis",
+        "label": "TESIS",
+        "color": "#ff8c42",
+        "icon": "tesis"
+      }
+    },
+    {
+      "name": "Diseno",
+      "match": {
+        "titleIncludes": ["Figma", "Photoshop", "Illustrator", "Canva"]
+      },
+      "state": {
+        "id": "designing",
+        "label": "DISENANDO",
+        "color": "#ff5fd1",
+        "icon": "designing"
+      }
+    },
+    {
+      "name": "Reunion",
+      "match": {
+        "titleIncludes": ["Zoom", "Meet", "Microsoft Teams", "Discord Call"]
+      },
+      "state": {
+        "id": "meeting",
+        "label": "REUNION",
+        "color": "#ffd166",
+        "icon": "meeting"
+      }
+    },
+    {
+      "name": "Musica",
+      "match": {
+        "titleIncludes": ["Spotify", "YouTube Music", "Apple Music"]
+      },
+      "state": {
+        "id": "music",
+        "label": "MUSICA",
+        "color": "#39d98a",
+        "icon": "music"
+      }
+    },
+    {
+      "name": "Video",
+      "match": {
+        "titleIncludes": ["YouTube", "Twitch", "Netflix", "Crunchyroll"]
+      },
+      "state": {
+        "id": "video",
+        "label": "VIDEO",
+        "color": "#ff4d6d",
+        "icon": "video"
+      }
+    },
+    {
+      "name": "Juegos",
+      "match": {
+        "titleIncludes": ["Steam", "VALORANT", "League of Legends", "Fortnite", "Minecraft", "Roblox"]
+      },
+      "state": {
+        "id": "gaming",
+        "label": "JUGANDO",
+        "color": "#7a6cff",
+        "icon": "gaming"
+      }
+    },
+    {
+      "name": "Chat",
+      "match": {
+        "titleIncludes": ["Discord", "Slack", "WhatsApp", "Telegram", "Messenger"]
+      },
+      "state": {
+        "id": "chat",
+        "label": "CHATEANDO",
+        "color": "#5aa0ff",
+        "icon": "chat"
+      }
+    },
+    {
+      "name": "Escritura",
+      "match": {
+        "titleIncludes": ["Notion", "Obsidian", "Google Docs", "Microsoft Word", "PDF"]
+      },
+      "state": {
+        "id": "writing",
+        "label": "ESCRIBIENDO",
+        "color": "#f2a65a",
+        "icon": "writing"
+      }
+    },
+    {
+      "name": "Terminal",
+      "match": {
+        "titleIncludes": ["PowerShell", "Windows Terminal", "Command Prompt", "Git Bash", "CMD"]
+      },
+      "state": {
+        "id": "terminal",
+        "label": "TERMINAL",
+        "color": "#5fd3bc",
+        "icon": "terminal"
+      }
+    },
+    {
+      "name": "Navegando",
+      "match": {
+        "titleIncludes": ["Google Chrome", "Mozilla Firefox", "Microsoft Edge", "Brave", "Opera"]
+      },
+      "state": {
+        "id": "browsing",
+        "label": "NAVEGANDO",
+        "color": "#4cb3ff",
+        "icon": "browsing"
+      }
+    },
+    {
+      "name": "Ausente",
+      "match": {
+        "titleIncludes": ["Lock Screen", "Sign in", "Windows Security"]
+      },
+      "state": {
+        "id": "away",
+        "label": "AUSENTE",
+        "color": "#8b95a7",
+        "icon": "away"
+      }
+    }
+  ]
+}

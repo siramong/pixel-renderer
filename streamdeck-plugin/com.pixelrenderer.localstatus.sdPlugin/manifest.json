@@ -1,0 +1,35 @@
+{
+  "Actions": [
+    {
+      "UUID": "com.pixelrenderer.localstatus.action",
+      "Name": "Estado Local",
+      "Tooltip": "Muestra icono + color del estado actual desde Pixel Renderer",
+      "Icon": "imgs/action-icon.png",
+      "States": [
+        {
+          "Image": "imgs/action-icon.png"
+        }
+      ],
+      "SupportedInMultiActions": true
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Pixel Renderer",
+  "Name": "Pixel Renderer Local Status",
+  "Description": "Boton local para Stream Deck con icono centrado y glow dinamico por estado.",
+  "Version": "1.0.0",
+  "Icon": "imgs/plugin-icon.png",
+  "Category": "Pixel Renderer",
+  "CategoryIcon": "imgs/category-icon.png",
+  "CodePathWin": "dist\\plugin.exe",
+  "URL": "https://localhost/pixel-renderer",
+  "Software": {
+    "MinimumVersion": "6.6"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ]
+}

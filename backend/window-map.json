@@ -151,6 +151,18 @@
       }
     },
     {
+      "name": "Redes Sociales",
+      "match": {
+        "titleIncludes": ["Facebook", "Twitter", "Instagram", "TikTok", "LinkedIn"]
+      },
+      "state": {
+        "id": "social",
+        "label": "REDES SOCIALES",
+        "color": "#ff9a9e",
+        "icon": "social"
+      }
+    },
+    {
       "name": "Ausente",
       "match": {
         "titleIncludes": ["Lock Screen", "Sign in", "Windows Security"]

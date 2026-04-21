@@ -1,9 +1,39 @@
+// Load .env (best-effort; no dependency required)
+(() => {
+  const fs = require("fs");
+  const path = require("path");
+  const envPath = path.join(__dirname, ".env");
+  if (!fs.existsSync(envPath)) return;
+  try {
+    const content = fs.readFileSync(envPath, "utf8");
+    for (const rawLine of content.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      const eq = line.indexOf("=");
+      if (eq === -1) continue;
+      const key = line.slice(0, eq).trim();
+      let value = line.slice(eq + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (!(key in process.env)) process.env[key] = value;
+    }
+  } catch (_) {
+    /* best-effort */
+  }
+})();
+
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const { spawnSync } = require("child_process");
+
+const spotify = require("./spotify");
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3050;
@@ -191,6 +221,19 @@ const ICONS = {
     "0101110010",
     "0010000100",
     "0001111000",
+    "0000000000",
+  ],
+  // NEW: heart-ish icon for social rule
+  social: [
+    "0110001100",
+    "1111011110",
+    "1111111111",
+    "1111111111",
+    "0111111110",
+    "0011111100",
+    "0001111000",
+    "0000110000",
+    "0000000000",
     "0000000000",
   ],
 };
@@ -501,6 +544,10 @@ if (typeof pollTimer.unref === "function") {
   pollTimer.unref();
 }
 
+// ── Spotify module ────────────────────────────────────────────────────────────
+spotify.init();
+spotify.registerRoutes(app);
+
 // ── API routes ────────────────────────────────────────────────────────────────
 
 app.get("/api/status", (req, res) => {
@@ -599,6 +646,9 @@ const server = app.listen(PORT, () => {
   console.log(`    GET  /api/streamdeck/button`);
   console.log(`    GET  /api/streamdeck/button.svg`);
   console.log(`    GET  /api/window-map`);
+  console.log(`    GET  /api/spotify/status`);
+  console.log(`    GET  /api/spotify/login`);
+  console.log(`    GET  /api/spotify/now-playing`);
   console.log(`    GET  /health\n`);
 });
 

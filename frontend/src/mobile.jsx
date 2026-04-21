@@ -1,14 +1,11 @@
 // /frontend/src/mobile.jsx
 import { createRoot } from "react-dom/client";
 import { PixelDisplay } from "./components/PixelDisplay.jsx";
+import { SpotifyBar } from "./components/SpotifyBar.jsx";
 import { useStatus } from "./hooks/useStatus.js";
 
 function MobileApp() {
   const { status } = useStatus();
-
-  // FIX: status?.state doesn't exist → use status?.label and status?.color
-  const label = status?.label || "—";
-  const color = status?.color || "#6a7280";
 
   return (
     <div
@@ -20,11 +17,22 @@ function MobileApp() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 32,
+        gap: 24,
       }}
     >
-      <div style={{ transform: "scale(2)", imageRendering: "pixelated" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 16,
+          transform: "scale(2)",
+          transformOrigin: "center center",
+          imageRendering: "pixelated",
+        }}
+      >
         <PixelDisplay stateData={status} />
+        <SpotifyBar />
       </div>
     </div>
   );

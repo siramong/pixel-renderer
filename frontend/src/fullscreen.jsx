@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { PixelDisplay } from "./components/PixelDisplay.jsx";
+import { SpotifyBar } from "./components/SpotifyBar.jsx";
 import { useStatus } from "./hooks/useStatus.js";
 
 // ── Themes ────────────────────────────────────────────────────────────────────
@@ -21,6 +22,7 @@ const THEMES = {
   writing:   { bg: "#0d0800", col: "#f2a65a" },
   terminal:  { bg: "#001a15", col: "#5fd3bc" },
   browsing:  { bg: "#000d1a", col: "#4cb3ff" },
+  social:    { bg: "#1a000d", col: "#ff9a9e" },
 };
 
 const PX = 8;
@@ -237,7 +239,7 @@ const ANIM_MAP = {
   editing:"scanlines", video:"scanlines",
   chat:"bubbles", meeting:"bubbles",
   designing:"grid", tesis:"grid", writing:"grid",
-  busy:"pulse", away:"pulse",
+  busy:"pulse", away:"pulse", social:"bubbles",
 };
 
 function initAnimation(id, canvas) {
@@ -273,8 +275,20 @@ function drawAnimation(ctx, canvas, s, tick) {
 
 const DISP_W = 96 * 8;
 const DISP_H = 22 * 8;
+const SPOTIFY_H = 64;
+const STACK_GAP = 16;
+
 function calcScale(w, h) {
-  return Math.max(1, Math.min(Math.floor((w * 0.88) / DISP_W), Math.floor((h * 0.55) / DISP_H), 6));
+  // Also account for the Spotify bar height + a small gap when scaling down.
+  const needH = DISP_H + STACK_GAP + SPOTIFY_H;
+  return Math.max(
+    1,
+    Math.min(
+      Math.floor((w * 0.88) / DISP_W),
+      Math.floor((h * 0.7) / needH),
+      6,
+    ),
+  );
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -348,11 +362,20 @@ function FullscreenApp() {
         position:"relative", zIndex:10, width:"100%", height:"100%",
         display:"flex", alignItems:"center", justifyContent:"center",
       }}>
-        <div style={{
-          transform:`scale(${scale})`, imageRendering:"pixelated",
-          filter:`drop-shadow(0 0 ${scale * 6}px ${rgba(theme.col, 0.55)})`,
-        }}>
+        <div
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "center center",
+            imageRendering: "pixelated",
+            filter: `drop-shadow(0 0 ${scale * 6}px ${rgba(theme.col, 0.55)})`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: STACK_GAP,
+          }}
+        >
           <PixelDisplay stateData={status} />
+          <SpotifyBar />
         </div>
       </div>
     </div>

@@ -535,6 +535,16 @@ app.use((req, res) => {
   res.status(404).json({ ok: false, error: "Not found" });
 });
 
+app.get('/fullscreen', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/fullscreen.html'));
+});
+
+app.get('/mobile', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/mobile.html'));
+});
+
+
+
 const server = app.listen(PORT, () => {
   console.log(`\n  Pixel Renderer API`);
   console.log(`  → http://localhost:${PORT}`);

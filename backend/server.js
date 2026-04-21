@@ -209,7 +209,9 @@ app.use(cors());
 app.use(express.json());
 
 function normalizeText(value) {
-  return String(value ?? "").trim().toLowerCase();
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
 }
 
 function clampNumber(value, min, max, fallback) {
@@ -274,7 +276,10 @@ function renderStreamDeckButtonSvg(status, options = {}) {
 </svg>`;
 }
 
-function normalizeState(state, fallbackState = FALLBACK_WINDOW_MAP.defaultState) {
+function normalizeState(
+  state,
+  fallbackState = FALLBACK_WINDOW_MAP.defaultState,
+) {
   const base = { ...fallbackState, ...(state || {}) };
   return {
     id: String(base.id || fallbackState.id || "idle"),
@@ -294,7 +299,9 @@ function readWindowMapFile() {
       rules: Array.isArray(parsed.rules) ? parsed.rules : [],
     };
   } catch (error) {
-    console.warn(`[window-map] Falling back to in-memory defaults: ${error.message}`);
+    console.warn(
+      `[window-map] Falling back to in-memory defaults: ${error.message}`,
+    );
     return FALLBACK_WINDOW_MAP;
   }
 }
@@ -312,18 +319,22 @@ function runPowerShell(script) {
   const executables = ["powershell.exe", "pwsh"];
 
   for (const executable of executables) {
-    const result = spawnSync(executable, [
-      "-NoProfile",
-      "-NonInteractive",
-      "-ExecutionPolicy",
-      "Bypass",
-      "-Command",
-      script,
-    ], {
-      encoding: "utf8",
-      windowsHide: true,
-      maxBuffer: 1024 * 1024,
-    });
+    const result = spawnSync(
+      executable,
+      [
+        "-NoProfile",
+        "-NonInteractive",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        script,
+      ],
+      {
+        encoding: "utf8",
+        windowsHide: true,
+        maxBuffer: 1024 * 1024,
+      },
+    );
 
     if (result.error && result.error.code === "ENOENT") {
       continue;
@@ -392,18 +403,24 @@ function getActiveWindowInfo() {
       pid: Number(parsed.pid || 0),
     };
   } catch (error) {
-    console.warn(`[window-map] Failed to parse active window info: ${error.message}`);
+    console.warn(
+      `[window-map] Failed to parse active window info: ${error.message}`,
+    );
     return { title: "", processName: "", pid: 0 };
   }
 }
 
 function ruleMatches(activeWindow, rule) {
   const match = rule.match || {};
-  const titleIncludes = Array.isArray(match.titleIncludes) ? match.titleIncludes : [];
+  const titleIncludes = Array.isArray(match.titleIncludes)
+    ? match.titleIncludes
+    : [];
   const title = normalizeText(activeWindow.title);
 
   if (titleIncludes.length > 0) {
-    const matchesTitle = titleIncludes.some((part) => title.includes(normalizeText(part)));
+    const matchesTitle = titleIncludes.some((part) =>
+      title.includes(normalizeText(part)),
+    );
     if (matchesTitle) return true;
   }
 
@@ -447,12 +464,22 @@ function buildStatus(state, activeWindow, matchedRule, previousState) {
   };
 }
 
-let currentState = buildStatus(windowMap.defaultState, { title: "", processName: "", pid: 0 }, "boot", null);
+let currentState = buildStatus(
+  windowMap.defaultState,
+  { title: "", processName: "", pid: 0 },
+  "boot",
+  null,
+);
 
 function syncStatus() {
   const activeWindow = getActiveWindowInfo();
   const resolved = resolveMappedState(activeWindow);
-  const nextState = buildStatus(resolved.state, activeWindow, resolved.ruleName, currentState);
+  const nextState = buildStatus(
+    resolved.state,
+    activeWindow,
+    resolved.ruleName,
+    currentState,
+  );
   const changed =
     currentState.id !== nextState.id ||
     currentState.label !== nextState.label ||
@@ -462,7 +489,9 @@ function syncStatus() {
   currentState = nextState;
 
   if (changed) {
-    console.log(`[status] ${nextState.label} <- ${activeWindow.title || "unknown"}`);
+    console.log(
+      `[status] ${nextState.label} <- ${activeWindow.title || "unknown"}`,
+    );
   }
 }
 
@@ -484,7 +513,10 @@ app.get("/api/streamdeck/button.svg", (req, res) => {
   const svg = renderStreamDeckButtonSvg(currentState, { size });
 
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
   res.send(svg);
 });
 
@@ -493,7 +525,10 @@ app.get("/api/streamdeck/button", (req, res) => {
   const baseUrl = `${req.protocol}://${req.get("host")}`;
   const imagePath = `/api/streamdeck/button.svg?size=${size}`;
 
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate",
+  );
   res.json({
     ok: true,
     data: {
@@ -521,6 +556,16 @@ app.get("/health", (req, res) => {
 if (fs.existsSync(FRONTEND_INDEX_PATH)) {
   app.use(express.static(FRONTEND_DIST_PATH));
 
+  // 👇 PRIMERO rutas custom
+  app.get('/fullscreen', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST_PATH, 'fullscreen.html'));
+  });
+
+  app.get('/mobile', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIST_PATH, 'mobile.html'));
+  });
+
+  // 👇 DESPUÉS el fallback SPA
   app.get(/^\/(?!api(?:\/|$)|health(?:\/|$)).*/, (req, res, next) => {
     if (req.method !== "GET") {
       next();
@@ -535,15 +580,13 @@ app.use((req, res) => {
   res.status(404).json({ ok: false, error: "Not found" });
 });
 
-app.get('/fullscreen', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/fullscreen.html'));
+app.get("/fullscreen", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/fullscreen.html"));
 });
 
-app.get('/mobile', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/mobile.html'));
+app.get("/mobile", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/mobile.html"));
 });
-
-
 
 const server = app.listen(PORT, () => {
   console.log(`\n  Pixel Renderer API`);
@@ -603,16 +646,22 @@ server.on("error", (error) => {
     probeExistingApi(PORT)
       .then((isPixelRendererApi) => {
         if (isPixelRendererApi) {
-          console.log(`\n[api] Ya hay una instancia activa en http://localhost:${PORT}.`);
+          console.log(
+            `\n[api] Ya hay una instancia activa en http://localhost:${PORT}.`,
+          );
           process.exit(0);
           return;
         }
 
-        console.error(`\n[api] Port ${PORT} ya esta en uso por otro proceso. Cierra ese proceso o usa PORT con otro valor.`);
+        console.error(
+          `\n[api] Port ${PORT} ya esta en uso por otro proceso. Cierra ese proceso o usa PORT con otro valor.`,
+        );
         process.exit(1);
       })
       .catch(() => {
-        console.error(`\n[api] Port ${PORT} ya esta en uso. Cierra ese proceso o usa PORT con otro valor.`);
+        console.error(
+          `\n[api] Port ${PORT} ya esta en uso. Cierra ese proceso o usa PORT con otro valor.`,
+        );
         process.exit(1);
       });
     return;

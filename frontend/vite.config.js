@@ -14,12 +14,12 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, "index.html"),
-        fullscreen: path.resolve(__dirname, "fullscreen.html"),
-        mobile: path.resolve(__dirname, "mobile.html"),
-      },
+  rollupOptions: {
+    input: {
+      main: "index.html",
+      fullscreen: "fullscreen.html",
+      mobile: "mobile.html",
     },
   },
+}
 });

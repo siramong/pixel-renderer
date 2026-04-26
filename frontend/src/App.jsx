@@ -1,5 +1,6 @@
 import { PixelDisplay } from "./components/PixelDisplay.jsx";
 import { SpotifyBar } from "./components/SpotifyBar.jsx";
+import { WindowSourceBar } from "./components/WindowSourceBar.jsx";
 import { useStatus } from "./hooks/useStatus.js";
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         gap: 0,
       }}
     >
+      <WindowSourceBar status={status} />
       <PixelDisplay stateData={status} />
       <SpotifyBar />
     </div>

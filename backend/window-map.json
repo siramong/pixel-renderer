@@ -33,7 +33,7 @@
     {
       "name": "Tesis",
       "match": {
-        "titleIncludes": ["Roblox Studio", "RobloxStudio"]
+        "titleIncludes": ["Roblox Studio", "RobloxStudio", "EMBER: UETS", "EMBER", "UETS"]
       },
       "state": {
         "id": "tesis",
@@ -93,7 +93,7 @@
     {
       "name": "Juegos",
       "match": {
-        "titleIncludes": ["Steam", "VALORANT", "League of Legends", "Fortnite", "Minecraft", "Roblox"]
+        "titleIncludes": ["Steam", "VALORANT", "League of Legends", "Fortnite", "Minecraft", "Roblox", "American Truck Simulator"]
       },
       "state": {
         "id": "gaming",

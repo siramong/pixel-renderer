@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { PixelDisplay } from "./components/PixelDisplay.jsx";
 import { SpotifyBar } from "./components/SpotifyBar.jsx";
+import { WindowSourceBar } from "./components/WindowSourceBar.jsx";
 import { useStatus } from "./hooks/useStatus.js";
 
 // ── Themes ────────────────────────────────────────────────────────────────────
@@ -275,12 +276,13 @@ function drawAnimation(ctx, canvas, s, tick) {
 
 const DISP_W = 96 * 8;
 const DISP_H = 22 * 8;
+const TOP_BAR_H = 40;
 const SPOTIFY_H = 64;
 const STACK_GAP = 16;
 
 function calcScale(w, h) {
-  // Also account for the Spotify bar height + a small gap when scaling down.
-  const needH = DISP_H + STACK_GAP + SPOTIFY_H;
+  // Also account for top window bar + Spotify bar and stack gaps.
+  const needH = TOP_BAR_H + DISP_H + SPOTIFY_H + STACK_GAP * 2;
   return Math.max(
     1,
     Math.min(
@@ -374,6 +376,7 @@ function FullscreenApp() {
             gap: STACK_GAP,
           }}
         >
+          <WindowSourceBar status={status} />
           <PixelDisplay stateData={status} />
           <SpotifyBar />
         </div>

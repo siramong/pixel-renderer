@@ -2,6 +2,7 @@
 import { createRoot } from "react-dom/client";
 import { PixelDisplay } from "./components/PixelDisplay.jsx";
 import { SpotifyBar } from "./components/SpotifyBar.jsx";
+import { WindowSourceBar } from "./components/WindowSourceBar.jsx";
 import { useStatus } from "./hooks/useStatus.js";
 
 function MobileApp() {
@@ -31,6 +32,7 @@ function MobileApp() {
           imageRendering: "pixelated",
         }}
       >
+        <WindowSourceBar status={status} />
         <PixelDisplay stateData={status} />
         <SpotifyBar />
       </div>

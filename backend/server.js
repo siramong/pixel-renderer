@@ -501,6 +501,7 @@ function buildStatus(state, activeWindow, matchedRule, previousState) {
     updatedAt: now,
     activeWindow: {
       title: activeWindow.title || "",
+      processName: activeWindow.processName || "",
       pid: activeWindow.pid || 0,
     },
     matchedRule,

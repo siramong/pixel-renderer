@@ -10,7 +10,11 @@ const FALLBACK_STATE = {
   color: PAL.GRAY,
   icon: "idle",
   since:   new Date().toISOString(),
-  activeWindow: null,
+  activeWindow: {
+    title: "",
+    processName: "",
+    pid: 0,
+  },
   matchedRule: "fallback",
 };
 

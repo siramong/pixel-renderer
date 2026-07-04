@@ -9,7 +9,7 @@
     {
       "name": "Programando",
       "match": {
-        "titleIncludes": ["Visual Studio Code", "Code -", "VS Code", "Claude", "GitHub"]
+        "titleIncludes": ["Visual Studio Code", "Code -", "VS Code", "Claude", "GitHub", "Codex","OpenCode"]
       },
       "state": {
         "id": "coding",
@@ -93,7 +93,7 @@
     {
       "name": "Juegos",
       "match": {
-        "titleIncludes": ["Steam", "VALORANT", "League of Legends", "Fortnite", "Minecraft", "Roblox", "American Truck Simulator"]
+        "titleIncludes": ["Steam", "VALORANT", "League of Legends", "Fortnite", "Minecraft", "Roblox", "American Truck Simulator","WARNO"]
       },
       "state": {
         "id": "gaming",
